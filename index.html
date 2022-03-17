@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pagina Vue - TODO List</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  
+  <div class="circle"></div>
+
+  <h1>ToDO List</h1>
+
+
+  <div id="app">
+    <div class="container">
+      <ul class="list">
+        <li v-for="(todo, index) in todos">
+          {{todo}}
+          <button @click="editTodo(todo,index)">Edit</button>
+          <button @click="deleteTodo(index)">Delete</button>
+        </li>
+      </ul>
+      <div v-if="isEdit">
+        <input id="todoUp" v-model="isEdit" type="text">
+        <input type="submit" @click='updateTodo' value="Update">
+      </div>
+      <div v-else>
+        <input id="todoSend" type="text" v-model="todo">
+        <input type="submit" @click='storeTodo' value="Send">  
+      </div>
+    </div>
+
+  </div>
+
+  <script src="https://unpkg.com/vue@next"></script>
+  <script>
+    //v-bind:[attr] = ""    : (Solo en minusculas es casesensitive) Para poder enlazar valores en los atributos <a v-bind:href="url">Un Link</a>
+    //v-on:([submit])='submitform' @ Añadir una escucha para los eventos que ecurren en ese elemento, submitForm se buscara en el objecto que enviamos para crear la app en el apartado methods:{..}
+
+
+
+    let todo = {
+      data(){
+        return {
+          todos : ["Todo","Estan","Aburridos"],
+          todo : "",
+          isEdit:false,
+          index:false
+        }
+      },
+      methods:{
+        storeTodo(){
+          this.todos.push(this.todo);
+          this.todo = ""
+          document.getElementById('todoSend').focus()
+        },
+        editTodo(todo, index){
+          this.isEdit = todo;
+          this.index = index;
+        },
+        updateTodo(){
+          this.todos[this.index] = this.isEdit;
+          this.isEdit = "";
+          this.index = false;
+        },
+        deleteTodo(index){
+          this.todos.splice(index, 1)
+        }
+      },
+      components:{
+      
+      }
+    } 
+    const vm = Vue.createApp(todo).mount('#app');
+
+
+
+
+
+    
+
+
+  </script>
+</body>
+</html>
